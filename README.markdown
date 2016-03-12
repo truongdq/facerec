@@ -1,5 +1,8 @@
 # facerec #
 
+## Dependencies ##
+dill sklearn
+
 ## Overview ##
 
 This project implements a face recognition framework for Python with:
@@ -30,7 +33,7 @@ This project implements a face recognition framework for Python with:
 ## Documentation ##
 
 
-You can find the documentation in the `doc` folder coming with this project. I have added the build html folder to 
+You can find the documentation in the `doc` folder coming with this project. I have added the build html folder to
 the repository, so you don't need to build it by yourself. But if you want to build the documentation by yourself,
 here is how to do it.
 
@@ -75,7 +78,7 @@ I've appended the old documentation, so people can also read this without visiti
 
 Due to popular request, I've created a simple example for getting started with the facerec framework.
 
-#### Getting the data right 
+#### Getting the data right
 
 We aren't doing a toy example, so you'll need some image data. For sake of simplicity I have assumed, that the images (the faces, persons you want to recognize) are given in folders. So imagine I have a folder `images` (the dataset!), with the subfolders person1, person2 and so on:
 
@@ -197,7 +200,7 @@ def read_images(path, sz=None):
 
     Args:
         path: Path to a folder with subfolders representing the subjects (persons).
-        sz: A tuple with the size Resizes 
+        sz: A tuple with the size Resizes
 
     Returns:
         A list [X,y]
@@ -318,7 +321,7 @@ def read_images(path, sz=None):
 
     Args:
         path: Path to a folder with subfolders representing the subjects (persons).
-        sz: A tuple with the size Resizes 
+        sz: A tuple with the size Resizes
 
     Returns:
         A list [X,y]
@@ -376,7 +379,7 @@ Take the k-Nearest Neighbor for example. Imagine I have a 3-Nearest Neighbor cla
 
 ```
 >>> model.predict(X)
-[ 0, 
+[ 0,
   { 'labels'    : [ 0,      0,      1      ],
     'distances' : [ 10.132, 10.341, 13.314 ]
   }
@@ -435,7 +438,7 @@ distance = classifier_output['distances'][0]
 if distance > 10.0:
   print "Unknown Person!"
 else
-  print "Person is known with label %i" % (predicted_label) 
+  print "Person is known with label %i" % (predicted_label)
 ```
 
 #### Image processing chains
@@ -447,7 +450,7 @@ Sometimes it's also necessary to perform preprocessing on your images. This fram
 class FeatureOperator(AbstractFeature):
 	"""
 	A FeatureOperator operates on two feature models.
-	
+
 	Args:
 		model1 [AbstractFeature]
 		model2 [AbstractFeature]
@@ -457,31 +460,31 @@ class FeatureOperator(AbstractFeature):
 			raise Exception("A FeatureOperator only works on classes implementing an AbstractFeature!")
 		self.model1 = model1
 		self.model2 = model2
-	
+
 	def __repr__(self):
 		return "FeatureOperator(" + repr(self.model1) + "," + repr(self.model2) + ")"
-		
+
 class ChainOperator(FeatureOperator):
 	"""
 	The ChainOperator chains two feature extraction modules:
 		model2.compute(model1.compute(X,y),y)
 	Where X can be generic input data.
-	
+
 	Args:
 		model1 [AbstractFeature]
 		model2 [AbstractFeature]
 	"""
 	def __init__(self,model1,model2):
 		FeatureOperator.__init__(self,model1,model2)
-		
+
 	def compute(self,X,y):
 		X = self.model1.compute(X,y)
 		return self.model2.compute(X,y)
-		
+
 	def extract(self,X):
 		X = self.model1.extract(X)
 		return self.model2.extract(X)
-	
+
 	def __repr__(self):
 		return "ChainOperator(" + repr(self.model1) + "," + repr(self.model2) + ")"
 ```
@@ -539,14 +542,14 @@ Once you have created your model you can call `compute` to learn it. Please see 
 
 <table style="border-style: none;">
     <tr>
-        <td style="border-style: none;"><img src="https://raw.github.com/bytefish/facerec/master/py/apps/videofacerec/simple_videofacerec.png" alt="simple_videofacerec.py in action" /></td> 
+        <td style="border-style: none;"><img src="https://raw.github.com/bytefish/facerec/master/py/apps/videofacerec/simple_videofacerec.png" alt="simple_videofacerec.py in action" /></td>
         <td style="border-style: none;">
             <p><a href="https://github.com/bytefish/facerec/tree/master/py/apps/videofacerec">videofacerec</a> is a tiny Python script I wrote to perform face recognition in videos and to showcase some of the <a href="http://www.github.com/bytefish/facerec">facerec framework</a> features. It was a really quick hack and I've always told people, that I can't give much of a help. But since many people kept asking for it recently, I've finally decided to rewrite it into something more useful and robust. And this is also the perfect chance to add some more <a href="http://www.github.com/bytefish/facerec">facerec</a> features and write a new blog post.</p>
             <p>The screenshot shows you the final applications output, with my beautiful face of course. I've trained a model with the images of some celebrities and the application recognizes me as the <i>terrific</i> <a href="http://en.wikipedia.org/wiki/Patrick_Stewart">Sir Patrick Stewart</a>, which makes perfect sense if you have read <a href="http://www.bytefish.de/blog/fisherfaces">my article on the Fisherfaces algorithm</a>.</p></td>
     </tr>
 </table>
 
-You can find the script and resources at: 
+You can find the script and resources at:
 
 * [https://github.com/bytefish/facerec/tree/master/py/apps/videofacerec](https://github.com/bytefish/facerec/tree/master/py/apps/videofacerec).
 
@@ -619,7 +622,7 @@ As you can see, the name for the recognition model (called ``model_filename`` ab
 
 #### getting the image data right ####
 
-All of my recent tutorials include the same part, that explains how to prepare the image data for my scripts. It's not because I love repeating myself, but because readers almost always ask this question, so I am copy and pasting it to avoid the confusion. For sake of simplicity I have assumed in the script, that the images (the *faces*, the *persons you want to recognize*) are given in folders. One folder per person. So imagine I have a folder (a dataset) called ``celebrities`` with the subfolders ``tom_hanks``, ``philipp_wagner``, ``angelina_jolie`` and so on. 
+All of my recent tutorials include the same part, that explains how to prepare the image data for my scripts. It's not because I love repeating myself, but because readers almost always ask this question, so I am copy and pasting it to avoid the confusion. For sake of simplicity I have assumed in the script, that the images (the *faces*, the *persons you want to recognize*) are given in folders. One folder per person. So imagine I have a folder (a dataset) called ``celebrities`` with the subfolders ``tom_hanks``, ``philipp_wagner``, ``angelina_jolie`` and so on.
 
 The folder (stored at ``~/facerec/data/celebrities`` in this example) will look like this
 
@@ -676,7 +679,7 @@ Starting application...
 This line (1) reads the image data in the given folder, (2) computes the model, (3) saves the model to ``my_model.pkl`` and finally starts grabbing images from the webcam. And you can see, that Python serializes you the learnt model to disk:
 
 <pre>
-philipp@mango:~/github/facerec/py/apps/videofacerec$ du -sh my_model.pkl 
+philipp@mango:~/github/facerec/py/apps/videofacerec$ du -sh my_model.pkl
 2.0M	my_model.pkl
 </pre>
 
